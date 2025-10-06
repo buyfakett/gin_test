@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func testRoutes(r *gin.Engine) {
-	userGroup := r.Group("/api")
+func testRoutes(apiGroup *gin.RouterGroup) {
+	testGroup := apiGroup.Group("/test")
 	{
-		userGroup.GET("/test/redis", hTest.Redis)
+		testGroup.GET("/redis", hTest.Redis)
 	}
 }

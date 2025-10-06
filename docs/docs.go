@@ -75,6 +75,22 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/api/test/redis": {
+            "get": {
+                "description": "测试redis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "测试接口"
+                ],
+                "summary": "测试redis",
+                "responses": {}
+            }
+        },
         "/api/user/add": {
             "put": {
                 "security": [

@@ -167,6 +167,17 @@ paths:
       summary: 服务信息
       tags:
       - 测试
+  /api/test/redis:
+    get:
+      consumes:
+      - application/json
+      description: 测试redis
+      produces:
+      - application/json
+      responses: {}
+      summary: 测试redis
+      tags:
+      - 测试接口
   /api/user/add:
     put:
       consumes:
