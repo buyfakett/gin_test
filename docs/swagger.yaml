@@ -1,0 +1,361 @@
+definitions:
+  response.Code:
+    enum:
+    - 0
+    - 200
+    - 401
+    - 500
+    - 501
+    - 502
+    - 503
+    type: integer
+    x-enum-varnames:
+    - Code_Common
+    - Code_Success
+    - Code_Unauthorized
+    - Code_Err
+    - Code_DBErr
+    - Code_PasswordErr
+    - Code_AlreadyExists
+  response.CommonResp:
+    properties:
+      code:
+        $ref: '#/definitions/response.Code'
+      msg:
+        type: string
+    type: object
+  user.ChangePasswdReq:
+    properties:
+      password:
+        maxLength: 255
+        minLength: 1
+        type: string
+    required:
+    - password
+    type: object
+  user.CreateReq:
+    properties:
+      username:
+        maxLength: 255
+        minLength: 1
+        type: string
+    required:
+    - username
+    type: object
+  user.InfoData:
+    properties:
+      enable:
+        type: boolean
+      user_id:
+        type: string
+      username:
+        type: string
+    type: object
+  user.InfoResp:
+    properties:
+      code:
+        $ref: '#/definitions/response.Code'
+      data:
+        $ref: '#/definitions/user.InfoData'
+      msg:
+        type: string
+      total:
+        type: integer
+    type: object
+  user.ListData:
+    properties:
+      enable:
+        type: boolean
+      user_id:
+        type: string
+      username:
+        type: string
+    type: object
+  user.ListResp:
+    properties:
+      code:
+        $ref: '#/definitions/response.Code'
+      data:
+        items:
+          $ref: '#/definitions/user.ListData'
+        type: array
+      msg:
+        type: string
+      total:
+        type: integer
+    type: object
+  user.LoginData:
+    properties:
+      token:
+        type: string
+    type: object
+  user.LoginReq:
+    properties:
+      password:
+        maxLength: 255
+        minLength: 1
+        type: string
+      remember_me:
+        type: boolean
+      username:
+        maxLength: 255
+        minLength: 1
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  user.LoginResp:
+    properties:
+      code:
+        $ref: '#/definitions/response.Code'
+      data:
+        $ref: '#/definitions/user.LoginData'
+      msg:
+        type: string
+    type: object
+  user.UpdateReq:
+    properties:
+      enable:
+        type: boolean
+      username:
+        maxLength: 255
+        minLength: 1
+        type: string
+    type: object
+info:
+  contact:
+    name: buyfakett
+    url: https://github.com/buyfakett
+paths:
+  /api/is_demo:
+    get:
+      consumes:
+      - application/json
+      description: 获取demo
+      produces:
+      - application/json
+      responses: {}
+      summary: 获取demo
+      tags:
+      - 测试
+  /api/metrics:
+    get:
+      responses: {}
+      summary: 普罗米修斯监控
+      tags:
+      - 监控
+  /api/ping:
+    get:
+      consumes:
+      - application/json
+      description: 测试网络接口
+      produces:
+      - application/json
+      responses: {}
+      summary: 测试网络接口
+      tags:
+      - 测试
+  /api/server_info:
+    get:
+      consumes:
+      - application/json
+      description: 服务信息
+      produces:
+      - application/json
+      responses: {}
+      summary: 服务信息
+      tags:
+      - 测试
+  /api/user/add:
+    put:
+      consumes:
+      - application/json
+      description: 创建用户
+      parameters:
+      - description: 用户信息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CommonResp'
+      security:
+      - ApiKeyAuth: []
+      summary: 创建用户
+      tags:
+      - 用户
+  /api/user/change_passwd/:user_id:
+    post:
+      consumes:
+      - application/json
+      description: 修改用户密码
+      parameters:
+      - description: 用户ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: 密码信息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/user.ChangePasswdReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CommonResp'
+      security:
+      - ApiKeyAuth: []
+      summary: 修改用户密码
+      tags:
+      - 用户
+  /api/user/delete/:user_id:
+    delete:
+      consumes:
+      - application/json
+      description: 删除用户
+      parameters:
+      - description: 用户ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CommonResp'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除用户
+      tags:
+      - 用户
+  /api/user/info/:user_id:
+    get:
+      consumes:
+      - application/json
+      description: 用户信息
+      parameters:
+      - description: 用户ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.InfoResp'
+      security:
+      - ApiKeyAuth: []
+      summary: 用户信息
+      tags:
+      - 用户
+  /api/user/list:
+    get:
+      consumes:
+      - application/json
+      description: 用户列表
+      parameters:
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      - description: 用户名
+        in: query
+        name: username
+        type: string
+      - description: 邮箱
+        in: query
+        name: email
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.ListResp'
+      security:
+      - ApiKeyAuth: []
+      summary: 用户列表
+      tags:
+      - 用户
+  /api/user/login:
+    post:
+      consumes:
+      - application/json
+      description: 用户登录
+      parameters:
+      - description: 登录凭证
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/user.LoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.LoginResp'
+      summary: 用户登录
+      tags:
+      - 用户
+  /api/user/update/:user_id:
+    post:
+      consumes:
+      - application/json
+      description: 更新用户
+      parameters:
+      - description: 用户ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: 更新信息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CommonResp'
+      security:
+      - ApiKeyAuth: []
+      summary: 更新用户
+      tags:
+      - 用户
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: authorization
+    type: apiKey
+swagger: "2.0"
