@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"gin_template/biz/dal/redis"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -51,14 +52,14 @@ type getRedis struct {
 // @Accept application/json
 // @Produce application/json
 // @Param key path string true "key"
-// @Router /api/test/redis/get/:key [GET]
+// @Router /api/test/redis/get/{key} [GET]
 func RedisGet(c *gin.Context) {
 	uriReq := new(getRedis)
 	if err := c.ShouldBindUri(uriReq); err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
-
+	log.Printf("uriReq: %v", uriReq)
 	val, err := redis.RDB.Get(context.Background(), uriReq.Key).Result()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "获取键值对失败"})

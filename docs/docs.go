@@ -75,7 +75,7 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/api/test/redis/get/:key": {
+        "/api/test/redis/get/{key}": {
             "get": {
                 "description": "测试获取redis",
                 "consumes": [

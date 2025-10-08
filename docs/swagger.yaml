@@ -181,7 +181,7 @@ paths:
       summary: 服务信息
       tags:
       - 测试
-  /api/test/redis/get/:key:
+  /api/test/redis/get/{key}:
     get:
       consumes:
       - application/json
