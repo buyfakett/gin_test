@@ -50,9 +50,17 @@ type ConfkeeperConfig struct {
 	ActionType []string `mapstructure:"action_type"`
 }
 
+type RedisConfig struct {
+	Enable   bool   `mapstructure:"enable"`
+	Addr     string `mapstructure:"addr"`
+	Password string `mapstructure:"password"`
+	DB       int    `mapstructure:"db"`
+}
+
 type AppConfig struct {
 	Server     ServerConfig     `mapstructure:"server"`
 	Db         DbConfig         `mapstructure:"db"`
+	Redis      RedisConfig      `mapstructure:"redis"`
 	Jwt        JwtConfig        `mapstructure:"jwt"`
 	Auth       AuthConfig       `mapstructure:"auth"`
 	Admin      AdminConfig      `mapstructure:"admin"`

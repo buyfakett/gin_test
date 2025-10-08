@@ -75,9 +75,9 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/api/test/redis": {
+        "/api/test/redis/get/:key": {
             "get": {
-                "description": "测试redis",
+                "description": "测试获取redis",
                 "consumes": [
                     "application/json"
                 ],
@@ -87,7 +87,43 @@ const docTemplate = `{
                 "tags": [
                     "测试接口"
                 ],
-                "summary": "测试redis",
+                "summary": "测试获取redis",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "key",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/test/redis/set": {
+            "put": {
+                "description": "测试设置redis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "测试接口"
+                ],
+                "summary": "测试设置redis",
+                "parameters": [
+                    {
+                        "description": "键值对信息",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.SetRedis"
+                        }
+                    }
+                ],
                 "responses": {}
             }
         },
@@ -552,6 +588,25 @@ const docTemplate = `{
                 },
                 "msg": {
                     "type": "string"
+                }
+            }
+        },
+        "user.SetRedis": {
+            "type": "object",
+            "required": [
+                "key",
+                "value"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1
+                },
+                "value": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1
                 }
             }
         },

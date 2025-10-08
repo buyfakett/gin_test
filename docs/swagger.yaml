@@ -114,6 +114,20 @@ definitions:
       msg:
         type: string
     type: object
+  user.SetRedis:
+    properties:
+      key:
+        maxLength: 255
+        minLength: 1
+        type: string
+      value:
+        maxLength: 255
+        minLength: 1
+        type: string
+    required:
+    - key
+    - value
+    type: object
   user.UpdateReq:
     properties:
       enable:
@@ -167,15 +181,39 @@ paths:
       summary: 服务信息
       tags:
       - 测试
-  /api/test/redis:
+  /api/test/redis/get/:key:
     get:
       consumes:
       - application/json
-      description: 测试redis
+      description: 测试获取redis
+      parameters:
+      - description: key
+        in: path
+        name: key
+        required: true
+        type: string
       produces:
       - application/json
       responses: {}
-      summary: 测试redis
+      summary: 测试获取redis
+      tags:
+      - 测试接口
+  /api/test/redis/set:
+    put:
+      consumes:
+      - application/json
+      description: 测试设置redis
+      parameters:
+      - description: 键值对信息
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/user.SetRedis'
+      produces:
+      - application/json
+      responses: {}
+      summary: 测试设置redis
       tags:
       - 测试接口
   /api/user/add:

@@ -5,6 +5,7 @@ import (
 	_ "embed"
 	"fmt"
 	"gin_template/biz/dal"
+	"gin_template/biz/dal/redis"
 	"gin_template/biz/mw"
 	genrouter "gin_template/biz/router"
 	"gin_template/docs"
@@ -53,6 +54,10 @@ func main() {
 		config.Cfg.Server.Name, config.Cfg.Server.Author, config.Cfg.Server.Author)
 	docs.SwaggerInfo.BasePath = ""
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+
+	if config.Cfg.Redis.Enable {
+		redis.Init()
+	}
 
 	// 注册swagger文档
 	if config.Cfg.Server.EnableSwagger {

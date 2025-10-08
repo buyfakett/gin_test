@@ -13,3 +13,5 @@ jwt:
 db:
   type: sqlite3
   database: confkeerer
+redis:
+  enable: false
